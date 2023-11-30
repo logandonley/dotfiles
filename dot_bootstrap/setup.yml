@@ -44,6 +44,9 @@
           - libuuid-devel
           - gdbm-libs
           - libnsl2
+          - luarocks
+          - wl-clipboard
+          - fd-find
         state: present
 
     - name: Change shell to zsh
