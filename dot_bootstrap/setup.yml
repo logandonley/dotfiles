@@ -207,3 +207,26 @@
           - org.gnome.meld
           - org.sqlitebrowser.sqlitebrowser
         state: present
+
+    - name: Ensure fonts directory
+      file:
+        path: "~{{ remote_regular_user }}/.fonts"
+        state: directory
+        mode: 0755
+        owner: "{{ remote_regular_user }}"
+
+    - name: Check if Jetbrains Mono exists
+      shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"
+      register: jetbrains_mono_exists
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Download Jetbrains mono
+      when: jetbrains_mono_exists is failed
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip
+        dest: "~{{ remote_regular_user }}/.fonts/"
+        remote_src: yes
+        mode: 0755
+        owner: "{{ remote_regular_user }}"
+
