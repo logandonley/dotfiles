@@ -478,6 +478,18 @@ local servers = {
       -- diagnostics = { disable = { 'missing-fields' } },
     },
   },
+
+  ansiblels = {},
+  ansible_lint = {},
+
+  htmx = {},
+  tailwindcss = {},
+  yamlls = {},
+
+  templ = {},
+
+  svelte = {},
+
 }
 
 -- Setup neovim lua configuration

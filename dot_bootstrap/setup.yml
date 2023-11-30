@@ -47,6 +47,7 @@
           - luarocks
           - wl-clipboard
           - fd-find
+          - gcc-c++
         state: present
 
     - name: Change shell to zsh
