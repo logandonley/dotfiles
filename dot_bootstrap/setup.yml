@@ -26,6 +26,8 @@
           - fzf
           - tmux
           - ffmpeg-free
+          - zlib
+          - zlib-devel
         state: present
 
     - name: Change shell to zsh
