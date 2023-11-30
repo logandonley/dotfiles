@@ -6,6 +6,10 @@
   gather_facts: true
 
   tasks:
+    - name: Get my user
+      ansible.builtin.set_fact:
+        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+
     - name: Install packages
       ansible.builtin.dnf:
         name:
@@ -21,7 +25,13 @@
           - zsh
           - fzf
           - tmux
+          - ffmpeg-free
         state: present
+
+    - name: Change shell to zsh
+      ansible.builtin.user:
+        name: "{{ remote_regular_user }}"
+        shell: /usr/bin/zsh
 
     - name: Install DNF plugins core
       ansible.builtin.dnf:
