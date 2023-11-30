@@ -23,6 +23,7 @@
           - helm
           - go-task
           - ripgrep
+          - poetry
           - zsh
           - fzf
           - tmux
