@@ -1,0 +1,151 @@
+---
+- name: Machine setup
+  hosts: localhost
+  become: true
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Install packages
+      ansible.builtin.dnf:
+        name:
+          - git
+          - htop
+          - vim
+          - firefox
+          - gh
+          - gnome-tweaks
+          - gcc
+          - helm
+          - ripgrep
+          - zsh
+          - fzf
+          - tmux
+        state: present
+
+    - name: Install DNF plugins core
+      ansible.builtin.dnf:
+        name: dnf-plugins-core
+        state: present
+
+    - name: Add Brave Browser Repo
+      ansible.builtin.yum_repository:
+        name: brave-browser
+        description: Brave Browser
+        baseurl: https://brave-browser-rpm-release.s3.brave.com/x86_64/
+        gpgkey: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+        gpgcheck: true
+        enabled: true
+
+    - name: Import Brave Browser GPG Key
+      ansible.builtin.rpm_key:
+        key: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+        state: present
+
+    - name: Install Brave Browser
+      ansible.builtin.dnf:
+        name: brave-browser
+        state: present
+
+    - name: Import Microsoft GPG Key
+      ansible.builtin.rpm_key:
+        key: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    - name: Add Visual Studio Code Repo
+      ansible.builtin.yum_repository:
+        name: vscode
+        description: Visual Studio Code
+        baseurl: https://packages.microsoft.com/yumrepos/vscode
+        gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+        gpgcheck: true
+        enabled: true
+
+    - name: Install VS Code
+      ansible.builtin.dnf:
+        name: code
+        state: present
+
+    - name: Add rtx config manager
+      ansible.builtin.yum_repository:
+        name: rtx
+        description: RTX Repo
+        baseurl: https://rtx.pub/rpm
+        gpgkey: https://rtx.pub/gpg-key.pub
+        gpgcheck: true
+        enabled: true
+
+    - name: Install RTX
+      ansible.builtin.dnf:
+        name: rtx
+        state: present
+
+    - name: Add kubectl repo
+      ansible.builtin.yum_repository:
+        name: Kubernetes
+        description: Kubernetes repo
+        baseurl: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+        gpgkey: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+        gpgcheck: true
+        enabled: true
+
+    - name: Install kubectl
+      ansible.builtin.dnf:
+        name: kubectl
+        state: present
+
+    - name: Add Hashicorp Repo
+      ansible.builtin.yum_repository:
+        name: hashicorp
+        description: Hashicorp repo
+        baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
+        gpgkey: https://rpm.releases.hashicorp.com/gpg
+        gpgcheck: true
+        enabled: true
+
+    - name: Install Terraform
+      ansible.builtin.dnf:
+        name: terraform
+        state: present
+
+    - name: Check if Pulumi is installed
+      ansible.builtin.command:
+        cmd: pulumi version
+      register: pulumi_installed
+      ignore_errors: true
+      changed_when: false
+
+    - name: Set desired Pulumi version
+      ansible.builtin.set_fact:
+        pulumi_version: "v3.94.2"
+
+    - name: Download Pulumi SDK
+      ansible.builtin.get_url:
+        url: "https://get.pulumi.com/releases/sdk/pulumi-{{ pulumi_version }}-linux-x64.tar.gz"
+        dest: "/tmp/pulumi-{{ pulumi_version }}-linux-x64.tar.gz"
+        mode: "0644"
+      when: pulumi_installed is failed or pulumi_installed.stdout is not search(pulumi_version)
+
+    - name: Extract Pulumi to /usr/local/bin
+      ansible.builtin.unarchive:
+        src: "/tmp/pulumi-{{ pulumi_version }}-linux-x64.tar.gz"
+        dest: /usr/local/bin
+        extra_opts: [--strip-components=1]
+        creates: /usr/local/bin/pulumi
+      when: pulumi_installed is failed or pulumi_installed.stdout is not search(pulumi_version)
+
+    - name: Install Flatpak packages
+      community.general.flatpak:
+        name:
+          - com.obsproject.Studio
+          - org.videolan.VLC
+          - org.tenacityaudio.Tenacity
+          - md.obsidian.Obsidian
+          - org.gimp.GIMP
+          - rest.insomnia.Insomnia
+          - com.github.johnfactotum.Foliate
+          - com.jetbrains.PyCharm-Professional
+          - com.jetbrains.GoLand
+          - org.gnome.meld
+          - org.sqlitebrowser.sqlitebrowser
+        state: present
