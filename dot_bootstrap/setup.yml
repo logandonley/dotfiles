@@ -21,6 +21,7 @@
           - gnome-tweaks
           - gcc
           - helm
+          - go-task
           - ripgrep
           - zsh
           - fzf
@@ -28,6 +29,20 @@
           - ffmpeg-free
           - zlib
           - zlib-devel
+          - make
+          - patch
+          - bzip2
+          - bzip2-devel
+          - readline-devel
+          - sqlite
+          - sqlite-devel
+          - openssl-devel
+          - tk-devel
+          - libffi-devel
+          - xz-devel
+          - libuuid-devel
+          - gdbm-libs
+          - libnsl2
         state: present
 
     - name: Change shell to zsh
