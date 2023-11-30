@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# .bootstrap/setup.yml hash: {{ include "dot_bootstrap/setup.yml" | sha256sum }}
+
+if command -v ansible-playbook &> /dev/null; then
+    ansible-playbook {{ joinPath .chezmoi.sourceDir "dot_bootstrap/setup.yml" | quote }} --ask-become-pass
+fi
+
+
