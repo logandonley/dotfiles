@@ -4,6 +4,10 @@
   become: true
   connection: local
   gather_facts: true
+  vars:
+    flyctl_version: "0.1.130"
+    pulumi_version: "v3.94.2"
+
 
   tasks:
     - name: Get my user
@@ -48,6 +52,7 @@
           - wl-clipboard
           - fd-find
           - gcc-c++
+          - doctl
         state: present
 
     - name: Change shell to zsh
@@ -177,10 +182,6 @@
       ignore_errors: true
       changed_when: false
 
-    - name: Set desired Pulumi version
-      ansible.builtin.set_fact:
-        pulumi_version: "v3.94.2"
-
     - name: Download Pulumi SDK
       ansible.builtin.get_url:
         url: "https://get.pulumi.com/releases/sdk/pulumi-{{ pulumi_version }}-linux-x64.tar.gz"
@@ -195,6 +196,26 @@
         extra_opts: [--strip-components=1]
         creates: /usr/local/bin/pulumi
       when: pulumi_installed is failed or pulumi_installed.stdout is not search(pulumi_version)
+
+    - name: Check if the targeted version of flyctl is installed
+      ansible.builtin.command: flyctl version
+      register: installed_flyctl_version
+      ignore_errors: true
+      changed_when: false
+
+    - name: Download flyctl tar.gz
+      ansible.builtin.get_url:
+        url: "https://github.com/superfly/flyctl/releases/download/v{{ flyctl_version }}/flyctl_{{ flyctl_version }}_Linux_x86_64.tar.gz"
+        dest: "/tmp/flyctl_{{ flyctl_version }}_Linux_x86_64.tar.gz"
+        mode: "0644"
+      when: flyctl_version not in installed_flyctl_version.stdout
+
+    - name: Extract flyctl to /usr/local/bin
+      ansible.builtin.unarchive:
+        src: "/tmp/flyctl_{{ flyctl_version }}_Linux_x86_64.tar.gz"
+        dest: "/usr/local/bin"
+        remote_src: true
+      when: flyctl_version not in installed_flyctl_version.stdout
 
     - name: Install Flatpak packages
       community.general.flatpak:
@@ -213,16 +234,16 @@
         state: present
 
     - name: Ensure fonts directory
-      file:
+      ansible.builtin.file:
         path: "~{{ remote_regular_user }}/.fonts"
         state: directory
-        mode: 0755
+        mode: '0755'
         owner: "{{ remote_regular_user }}"
 
     - name: Check if Jetbrains Mono exists
-      shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"
+      ansible.builtin.shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"
       register: jetbrains_mono_exists
-      ignore_errors: yes
+      ignore_errors: true
       changed_when: false
 
     - name: Download Jetbrains mono
@@ -230,7 +251,6 @@
       ansible.builtin.unarchive:
         src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip
         dest: "~{{ remote_regular_user }}/.fonts/"
-        remote_src: yes
-        mode: 0755
+        remote_src: true
+        mode: '0755'
         owner: "{{ remote_regular_user }}"
-

@@ -13,3 +13,4 @@ eval "$(rtx activate zsh)"
 alias task=go-task
 alias v=nvim
 alias k=kubectl
+alias fly=flyctl
