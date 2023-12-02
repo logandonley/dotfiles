@@ -8,7 +8,6 @@
     flyctl_version: "0.1.130"
     pulumi_version: "v3.94.2"
 
-
   tasks:
     - name: Get my user
       ansible.builtin.set_fact:
@@ -53,6 +52,7 @@
           - fd-find
           - gcc-c++
           - doctl
+          - helix
         state: present
 
     - name: Change shell to zsh
@@ -237,7 +237,7 @@
       ansible.builtin.file:
         path: "~{{ remote_regular_user }}/.fonts"
         state: directory
-        mode: '0755'
+        mode: "0755"
         owner: "{{ remote_regular_user }}"
 
     - name: Check if Jetbrains Mono exists
@@ -252,5 +252,5 @@
         src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip
         dest: "~{{ remote_regular_user }}/.fonts/"
         remote_src: true
-        mode: '0755'
+        mode: "0755"
         owner: "{{ remote_regular_user }}"
