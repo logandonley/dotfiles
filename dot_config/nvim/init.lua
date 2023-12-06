@@ -480,8 +480,11 @@ local servers = {
   },
 
   ansiblels = {},
+  emmet_language_server = {},
+  -- djlint = {},
+  -- black = {},
 
-  htmx = {},
+  -- htmx = {},
   tailwindcss = {},
   yamlls = {},
 

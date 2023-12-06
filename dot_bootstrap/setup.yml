@@ -53,6 +53,18 @@
           - gcc-c++
           - doctl
           - helix
+          - '@Development Tools'
+          - '@C Development Tools and Libraries'
+          - autoconf
+          - ncurses-devel
+          - wxGTK-devel
+          - wxBase
+          - java-1.8.0-openjdk-devel
+          - libiodbc
+          - unixODBC-devel.x86_64
+          - erlang-odbc.x86_64
+          - libxslt
+          - fop
         state: present
 
     - name: Change shell to zsh
