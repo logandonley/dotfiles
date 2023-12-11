@@ -66,6 +66,7 @@
           - libxslt
           - fop
           - podman-compose
+          - inotify-tools
         state: present
 
     - name: Change shell to zsh
