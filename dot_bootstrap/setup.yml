@@ -65,6 +65,7 @@
           - erlang-odbc.x86_64
           - libxslt
           - fop
+          - podman-compose
         state: present
 
     - name: Change shell to zsh
