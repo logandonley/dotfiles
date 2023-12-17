@@ -485,7 +485,16 @@ local servers = {
   -- black = {},
 
   -- htmx = {},
-  tailwindcss = {},
+  tailwindcss = {
+    filetypes = { "html", "elixir", "heex", "eelixir", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    init_options = {
+      userLanguages = {
+        elixir = 'html-eex',
+        eelixir = 'html-eex',
+        heex = 'html-eex',
+      }
+    },
+  },
   yamlls = {},
 
   templ = {},

@@ -53,8 +53,8 @@
           - gcc-c++
           - doctl
           - helix
-          - '@Development Tools'
-          - '@C Development Tools and Libraries'
+          - "@Development Tools"
+          - "@C Development Tools and Libraries"
           - autoconf
           - ncurses-devel
           - wxGTK-devel
@@ -67,6 +67,7 @@
           - fop
           - podman-compose
           - inotify-tools
+          - blender
         state: present
 
     - name: Change shell to zsh

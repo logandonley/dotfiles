@@ -14,6 +14,8 @@ return {
       })
     end
 
+    sources[#sources + 1] = formatting.prettier
+
     null_ls.setup({
       sources = sources,
     })
