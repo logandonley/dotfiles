@@ -1,3 +1,4 @@
 . "$HOME/.cargo/env"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.luarocks/bin:$PATH"
+export PATH="$HOME/.scripts/bin:$PATH"
