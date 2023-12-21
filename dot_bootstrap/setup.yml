@@ -68,6 +68,8 @@
           - podman-compose
           - inotify-tools
           - blender
+          - toilet
+          - dotnet-sdk-8.0
         state: present
 
     - name: Change shell to zsh
@@ -242,8 +244,6 @@
           - org.gimp.GIMP
           - rest.insomnia.Insomnia
           - com.github.johnfactotum.Foliate
-          - com.jetbrains.PyCharm-Professional
-          - com.jetbrains.GoLand
           - org.gnome.meld
           - org.sqlitebrowser.sqlitebrowser
         state: present

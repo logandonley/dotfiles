@@ -7,6 +7,7 @@ export EDITOR=nvim
 export PATH=$PATH:$HOME/.local/share/bob/nvim-bin
 export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/.cargo/bin
+export PATH="$HOME/.scripts/bin:$PATH"
 
 eval "$(rtx activate zsh)"
 
@@ -14,3 +15,10 @@ alias task=go-task
 alias v=nvim
 alias k=kubectl
 alias fly=flyctl
+
+# bun completions
+[ -s "/home/ldonley/.bun/_bun" ] && source "/home/ldonley/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
