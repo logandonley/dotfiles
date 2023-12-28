@@ -9,6 +9,7 @@ return {
 
     configs.setup({
       ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "html", "css", "python", "go", "tsx", "bash", "markdown", "markdown_inline", "http", "json" },
+      auto_install = true,
       sync_install = false,
       highlight = { enable = true },
       indent = { enable = true },

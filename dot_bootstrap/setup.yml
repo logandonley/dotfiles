@@ -70,6 +70,7 @@
           - blender
           - toilet
           - dotnet-sdk-8.0
+          - unar
         state: present
 
     - name: Change shell to zsh
